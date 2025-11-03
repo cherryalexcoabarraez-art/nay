@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta para mi Amor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffd1dc, #ffb6c1, #ff9eb5);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            color: #d63384;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            padding: 0 15px;
+        }
+        
+        /* Estilo del sobre */
+        .envelope-container {
+            position: relative;
+            margin: 20px 0 30px;
+        }
+        
+        .envelope {
+            width: 200px;
+            height: 150px;
+            background: #ff69b4;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+        
+        .envelope:hover {
+            transform: scale(1.05);
+        }
+        
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 50px solid #ff69b4;
+        }
+        
+        .envelope:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+        
+        .envelope-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+        
+        /* Gatito tirando besos */
+        .kitten-container {
+            display: none;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .kitten {
+            font-size: 3rem;
+            position: relative;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        
+        .kiss {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #ff69b4;
+            animation: floatUp 3s infinite;
+        }
+        
+        .kiss-1 {
+            top: -20px;
+            right: 10px;
+            animation-delay: 0.5s;
+        }
+        
+        .kiss-2 {
+            top: 10px;
+            right: -15px;
+            animation-delay: 1s;
+        }
+        
+        .kiss-3 {
+            bottom: 0;
+            left: -20px;
+            animation-delay: 1.5s;
+        }
+        
+        /* Estilo de la carta */
+        .letter-container {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .letter {
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        
+        .letter-header {
+            border-bottom: 2px solid #ffb6c1;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .letter-header h2 {
+            color: #d63384;
+            font-size: 1.5rem;
+        }
+        
+        .letter-content {
+            color: #555;
+            line-height: 1.6;
+            font-size: 1rem;
+            min-height: 200px;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .letter-footer {
+            margin-top: 20px;
+            text-align: right;
+            font-style: italic;
+            color: #d63384;
+        }
+        
+        .heart {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #ff69b4;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #ff69b4;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 5;
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        @keyframes envelopeOpen {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        
+        .envelope-open {
+            animation: envelopeOpen 0.8s ease forwards;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes floatUp {
+            0% { 
+                transform: translateY(0) scale(0.5); 
+                opacity: 0; 
+            }
+            50% { 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(-40px) scale(1.2); 
+                opacity: 0; 
+            }
+        }
+        
+        /* Efecto de corazones flotantes */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart-float {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.5);
+            font-size: 20px;
+            animation: float 8s linear infinite;
+            opacity: 0;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .signature {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #d63384;
+        }
+        
+        .highlight {
+            color: #d63384;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>Para la persona más especial de mi vida</h1>
+        
+        <div class="envelope-container">
+            <div class="envelope" id="envelope">
+                <div class="envelope-text">¡Ábreme!</div>
+            </div>
+        </div>
+        
+        <div class="kitten-container" id="kitten-container">
+            <div class="kitten">
+                😻
+                <div class="kiss kiss-1">💋</div>
+                <div class="kiss kiss-2">💋</div>
+                <div class="kiss kiss-3">💋</div>
+            </div>
+        </div>
+        
+        <div class="letter-container" id="letter-container">
+            <button class="close-btn" id="close-btn">X</button>
+            <div class="letter" id="letter">
+                <div class="letter-header">
+                    <h2>Para mi amor</h2>
+                </div>
+                <div class="letter-content" id="letter-text">
+                    <p>Mucho éxito mañana mi amor <span class="highlight">¡TE AMO!</span> Me gusta y admiro que explotes y aproveches tu potencial! Tus cursos sean el principio de muchas chicas que quieran empezar su emprendimiento y me alegro mucho por ellas ya que se están preparando con una mujer muy profesional ❤️❤️❤️❤️.</p>
+                    
+                    <p>Estoy muy feliz de las cosas bonitas que están sucediendo en tu vida, acá podemos apreciar que Dios te ha escuchado y está obrando en tu vida, solo tenemos que confiar en que todo estará bien. Te amo mucho mi princesa, estoy muy orgulloso y feliz.</p>
+                    
+                    <p>Eres una mujer maravillosa y amo que estés a mi lado. Gracias preciosa, amo amarte cada día ❤️❤️❤️</p>
+                </div>
+                <div class="letter-footer">
+                    Con todo mi amor,<br>
+                    <span class="signature">Tu novio</span>
+                </div>
+                <div class="heart">❤️</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const envelope = document.getElementById('envelope');
+            const letterContainer = document.getElementById('letter-container');
+            const kittenContainer = document.getElementById('kitten-container');
+            const closeBtn = document.getElementById('close-btn');
+            const heartsContainer = document.getElementById('hearts');
+            let isLetterOpen = false;
+            
+            // Crear corazones flotantes
+            function createHearts(count = 15) {
+                for (let i = 0; i < count; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart-float');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDelay = Math.random() * 8 + 's';
+                    heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                    heartsContainer.appendChild(heart);
+                }
+            }
+            
+            // Abrir la carta al hacer clic en el sobre
+            envelope.addEventListener('click', function() {
+                if (!isLetterOpen) {
+                    // Animación de apertura del sobre
+                    envelope.classList.add('envelope-open');
+                    
+                    // Mostrar la carta después de un breve retraso
+                    setTimeout(function() {
+                        kittenContainer.style.display = 'block';
+                        kittenContainer.classList.add('fade-in');
+                        
+                        // Mostrar la carta después del gatito
+                        setTimeout(function() {
+                            letterContainer.style.display = 'block';
+                            letterContainer.classList.add('fade-in');
+                            isLetterOpen = true;
+                            
+                            // Crear más corazones cuando se abre la carta
+                            createHearts(10);
+                        }, 500);
+                    }, 500);
+                }
+            });
+            
+            // Cerrar la carta
+            closeBtn.addEventListener('click', function() {
+                letterContainer.style.display = 'none';
+                kittenContainer.style.display = 'none';
+                envelope.classList.remove('envelope-open');
+                isLetterOpen = false;
+                
+                // Restablecer el sobre
+                setTimeout(function() {
+                    envelope.style.opacity = '1';
+                    envelope.style.transform = 'scale(1)';
+                }, 300);
+            });
+            
+            // Crear corazones iniciales
+            createHearts();
+        });
+    </script>
+</body>
+</html>
